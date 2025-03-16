@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,500;0,600;0,800;1,700&family=Poppins:ital,wght@0,300;0,500;0,600;0,700;0,900;1,400&display=swap');
+
+:root {
+    --grey-clean-1: rgb(179, 181, 185);
+    --grey-clean: rgb(218, 220, 224);
+    --primary-blue: rgb(26, 115, 232);
+    --text-gray: #202124;
+    --background-gray: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+}
+
+.container-box {
+    margin: 50px auto;
+    display: flex;
+    width: 400px;
+    height: 450px;
+    flex-direction: column;
+    padding: 2rem 3.5rem;
+    border-radius: .2rem;
+    box-shadow: 4px 4px 10px hsla(0, 0%, 0%, 0.055);
+    border: 1px solid var(--grey-clean);
+}
+.container-box.fluid{
+    height: fit-content;
+}
+.container-box.cad{
+    margin: 90px auto;
+    height: 550px;
+}
+.input-box.cad:nth-child(3){
+    margin-bottom: 1.5rem;
+}
+.input-box.cad:nth-child(4){
+    margin-bottom: .5rem;
+}
+.input-checkbox{
+    display: flex;
+    font-size: .9rem;
+    gap: .2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+
+}
+
+.header-form-login {
+    display: flex;
+    gap: .3rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-form-login img {
+    width: 40px;
+}
+
+.header-form-login p {
+    font-size: .9rem;
+    color: var(--text-gray);
+}
+
+/* =============== inputs zone ================ */
+.input-box {
+    position: relative;
+    margin-bottom: 1.5rem;
+    border-radius: .4rem;
+    border: 1.5px solid var(--grey-clean);
+}
+.input-box:nth-child(3){
+    margin-bottom: .2rem;
+}
+#esqueceuSenha{
+    margin-bottom: 1.3rem;
+    margin-left: .4rem;
+    font-size: .9rem;
+}
+.input-box:focus-within {
+    border: 1.5px solid var(--primary-blue);
+}
+
+.input-box input::placeholder {
+    opacity: 0;
+}
+
+.input-box:focus-within input::placeholder {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .4s linear;
+}
+
+.input-box:not(:focus-within) input::placeholder {
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+
+.input-box input {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: .7rem 2.7rem .7rem .9rem;
+    border: none;
+    background-color: transparent;
+    border-radius: .4rem;
+    transition: all .3s ease-in-out;
+    outline: none;
+}
+
+.input-box label {
+    font-size: .9rem;
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    transform: translateY(50%);
+    transition: .2s ease-in;
+    pointer-events: none;
+    opacity: 1;
+    color: var(--text-gray);
+}
+
+.input-box input:focus~label {
+    color: var(--primary-blue);
+    padding: 0 .4rem;
+}
+.input-box.cad:nth-child(4) input:focus~label,
+.input-box.cad:nth-child(4) input:valid~label{
+    margin-left: 1rem;
+ }
+.input-box input:focus~label,
+.input-box input:valid~label {
+    transform: translate(-20%, -55%);
+    font-size: .9rem;
+    background-color: var(--background-gray);
+    padding: 0 .4rem;
+
+}
+
+/* ==============end input zone ============ */
+.btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    background-color: #313131;
+    border: transparent;
+    color: #fff;
+    padding: .7rem;
+    border-radius: .4rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: .1s;
+}
+
+
+.btn-login:hover {
+    background-color: #313131;
+}
+
+footer {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+    /* Ajustes gerais */
+    body {
+        font-size: 12px; /* Tamanho de fonte menor para telas pequenas */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Ajustando o container principal para ocupar mais espaço e ser flexível */
+    .container-box {
+        width: 80%; /* Reduzindo a largura para ocupar mais espaço na tela */
+        margin: 20px auto; /* Ajustando a margem */
+        padding: 1rem; /* Reduzindo o padding */
+        height: auto; /* Para permitir o conteúdo flexível */
+        border: 0;
+        box-shadow: none;
+    }
+
+    /* Ajustes no título e cabeçalho */
+    .header-form-login {
+        gap: 0.5rem; /* Menor espaço entre os elementos */
+        margin-bottom: 1rem;
+    }
+
+    .header-form-login img {
+        width: 35px; /* Ajustando o tamanho do ícone */
+    }
+
+    .header-form-login p {
+        font-size: 0.8rem; /* Font menor */
+    }
+
+    /* Ajustes nos inputs */
+    .input-box {
+        width: 100%; /* Garantir que o input ocupe toda a largura disponível */
+        margin-bottom: 1.5rem; /* Reduzir a margem entre os inputs */
+    }
+
+    /* Ajuste nos botões */
+    .btn-wrapper {
+        flex-direction: column; /* Tornando os botões em uma coluna */
+        gap: 1rem; /* Espaço entre os botões */
+    }
+
+    .btn {
+        width: 100%; /* Botões ocupando toda a largura */
+        
+    }
+
+    /* Ajuste no rodapé */
+    footer {
+        bottom: 20px; /* Aumentar a distância do rodapé */
+    }
+}

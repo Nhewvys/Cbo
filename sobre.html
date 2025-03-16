@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhewvys - Desenvolvimento Web e Sistemas</title>
+    <script src="src/javascript/auth-guard.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="src/javascript/firebase-init.js"></script>
+    <style>
+        /* Fontes */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #444444;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            color: #FFFFFF;
+            padding: 40px 0;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 36px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            color: #1E3A5F;
+            margin-top: 30px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #444444;
+        }
+
+        .slogan {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: #00FFA3;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .projects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .project-card {
+            background-color: #FFFFFF;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1 1 calc(33.333% - 40px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: #1E3A5F;
+            margin: 0 0 10px;
+        }
+
+        footer {
+            
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header>
+            <img src="src/images/cabeçalho-simples (1).svg" alt="" srcset="">
+        </header>
+
+        <!-- Conteúdo Principal -->
+
+
+        <!-- Sobre Mim -->
+        <div class="section">
+            <h2>Quem Sou Eu</h2>
+            <p>
+                Olá! Meu nome é Nhewvys, e minha jornada na programação começou em 2020, durante o ensino médio técnico.
+                Na época, ainda estava descobrindo meu interesse pela área, mas foi em 2022, durante as aulas de
+                desenvolvimento web, que tudo mudou. Foi ali que me apaixonei por criar soluções tecnológicas.
+            </p>
+            <p>
+                Um dos momentos mais marcantes foi o desenvolvimento de um projeto que visava organizar as filas do
+                refeitório usando automação com Arduino. Esse projeto não só foi selecionado para a FECIBA (Feira de
+                Ciências da Bahia), em Salvador, como também conquistamos o primeiro lugar! Desde então, tenho me
+                aprofundado cada vez mais nos estudos, buscando sempre aprender e evoluir, mesmo com os desafios
+                impostos pela pandemia.
+            </p>
+            <p>
+                Hoje, atuo como desenvolvedor web e designer gráfico, criando sistemas personalizados que resolvem
+                problemas reais e impulsionam negócios. Minha paixão é transformar ideias em soluções funcionais e
+                eficientes.
+            </p>
+        </div>
+
+        <!-- O Que Faço -->
+        <div class="section">
+            <h2>O Que Faço</h2>
+            <p>
+                Ofereço serviços de desenvolvimento web, design gráfico e criação de sistemas de gerenciamento e CRM.
+                Trabalho com tecnologias modernas como HTML, CSS, JavaScript, Node.js, React e bancos de dados SQL.
+                Meus projetos são focados em usabilidade, desempenho e design responsivo.
+            </p>
+        </div>
+
+
+        <!-- O Que Faço -->
+        <div class="section">
+            <h2>O Que Faço</h2>
+            <p>
+                Ofereço serviços de desenvolvimento web, design gráfico e criação de sistemas de gerenciamento e CRM.
+                Trabalho com tecnologias
+                modernas como HTML, CSS, JavaScript, Node.js, React e bancos de dados SQL. Meus projetos são focados em
+                usabilidade, desempenho
+                e design responsivo.
+            </p>
+        </div>
+
+
+        <!-- Projetos Desenvolvidos -->
+        <div class="section">
+            <h2>Projetos Desenvolvidos</h2>
+            <div class="projects">
+                <!-- Projeto 1: Bot WhatsApp -->
+                <div class="project-card">
+                    <h3>Bot de WhatsApp em Node.js</h3>
+                    <p>Desenvolvimento de um bot para WhatsApp com funcionalidades de automação, integração de APIs e
+                        envio de mensagens automatizadas.</p>
+                </div>
+
+                <!-- Projeto 2: Automação em Arduino -->
+                <div class="project-card">
+                    <h3>Automação para Controle de Filas</h3>
+                    <p>Projeto de automação com Arduino para controle e organização de filas em ambientes como
+                        refeitórios ou eventos.</p>
+                </div>
+
+                <!-- Projeto 3: Sistema de Gerenciamento de Contatos -->
+                <div class="project-card">
+                    <h3>Sistema de Gerenciamento de Contatos</h3>
+                    <p>Desenvolvimento de um sistema simples para gerenciar contatos, com funcionalidades de adição,
+                        exclusão e atualização de dados.</p>
+                </div>
+
+                <!-- Projeto 4: Dashboard de Análise de Dados -->
+                <div class="project-card">
+                    <h3>Dashboard de Análise de Dados</h3>
+                    <p>Criação de um painel de controle para análise e visualização de dados em tempo real, utilizando
+                        gráficos e integração com bancos de dados.</p>
+                </div>
+
+                <!-- Projeto 5: Sistema de Inventário -->
+                <div class="project-card">
+                    <h3>Sistema de Inventário</h3>
+                    <p>Desenvolvimento de um sistema de gerenciamento de inventário para controle de estoque, com
+                        funcionalidades de entradas e saídas de produtos.</p>
+                </div>
+
+                <!-- Projeto 6: Site de Portfólio Interativo -->
+                <div class="project-card">
+                    <h3>Portfólio Interativo</h3>
+                    <p>Criação de um portfólio online interativo, utilizando HTML, CSS e JavaScript, com animações e
+                        transições dinâmicas para uma experiência do usuário mais envolvente.</p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- Rodapé -->
+        <footer>
+            <p>Entre em contato: <a href="mailto:contato@sinerious.com">contato@sinerious.com</a></p>
+            <p>&copy; 2023 Nhewvys. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

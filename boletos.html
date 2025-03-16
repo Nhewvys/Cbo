@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="src/javascript/auth-guard.js" defer></script>
+    <title>Boleto Sinrious</title>
+    <style>
+        .pagina {
+            width: 210mm;
+            font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-size: 8pt;
+            font-weight: bold;
+            margin: 5mm auto;
+            page-break-inside: avoid;
+            /* Evita que o boleto quebre entre páginas */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1pt black solid;
+            padding-left: 2pt;
+            padding-right: 2pt;
+            font-weight: normal;
+        }
+
+        td.center {
+            text-align: center;
+            vertical-align: super;
+        }
+
+        td.left {
+            text-align: left;
+            vertical-align: super;
+        }
+
+        td.right {
+            text-align: right;
+            vertical-align: super;
+        }
+
+        p {
+            font-weight: bold;
+            text-align: left;
+            white-space: nowrap;
+            margin-top: 2pt;
+        }
+
+        td.sem-borda {
+            border: none;
+        }
+
+        td.borda-left {
+            border: none;
+            border-right: 1pt solid;
+            vertical-align: bottom;
+        }
+
+        td.cabecalho {
+            padding: 0 2mm 0 2mm;
+            font-weight: bolder;
+            font-size: 10pt;
+            vertical-align: middle;
+        }
+
+        td.logo {
+            font-size: 8pt;
+        }
+
+        hr {
+            border-top: 1pt dashed;
+            margin: -1mm 0;
+        }
+
+        @media print {
+            .noprint {
+                display: none;
+            }
+
+            .pagina {
+                width: 100%;
+                margin: 0;
+                /* Remove margens para otimizar o espaço */
+            }
+
+            hr {
+                border-top: 1pt dashed;
+                margin: 5mm 0;
+            }
+
+            body {
+                margin: 0;
+                /* Remove margens padrão do navegador */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Botão de Imprimir no Topo -->
+    <div class="noprint text-center mt-4">
+        <button onclick="window.print()" class="btn btn-primary">Imprimir Boleto(s)</button>
+    </div>
+
+    <!-- Container para os boletos gerados -->
+    <div id="boletos-container"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="src/javascript/firebase-init.js"></script>
+
+    <script>
+
+        // Função para decodificar os parâmetros da URL
+        function getQueryParams() {
+            const params = {};
+            window.location.search.substring(1).split("&").forEach(param => {
+                const [key, value] = param.split("=");
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            });
+            return params;
+        }
+
+        // Função para adicionar meses a uma data (corrigida para evitar problemas de fuso horário)
+        function adicionarMeses(data, meses) {
+            const novaData = new Date(data);
+            novaData.setUTCMonth(novaData.getUTCMonth() + meses);
+            return novaData;
+        }
+
+        // Função para formatar a data no padrão DD/MM/AAAA
+        function formatarData(data) {
+            const dia = String(data.getUTCDate()).padStart(2, "0");
+            const mes = String(data.getUTCMonth() + 1).padStart(2, "0");
+            const ano = data.getUTCFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        // Função para formatar o valor com 2 casas decimais
+        function formatarValor(valor) {
+            const numero = parseFloat(valor); // Garantir que o valor seja um número
+            if (isNaN(numero)) {
+                return 'Valor inválido';
+            }
+            return numero.toFixed(2).replace('.', ','); // Formatar para duas casas decimais
+        }
+
+        // Função para gerar a chave de segurança
+        function gerarChaveSegurança(boletoData, numeroParcela) {
+            return `${boletoData.numeroDocumento}-${numeroParcela}-${boletoData.cpfCnpjPagador}`;
+        }
+
+        // Captura os dados da URL
+        const queryParams = getQueryParams();
+        const boletoData = JSON.parse(queryParams.data);
+
+        // Gera os boletos com base no número de parcelas
+        const boletosContainer = document.getElementById("boletos-container");
+        const dataVencimentoInicial = new Date(boletoData.dataVencimento + "T00:00:00Z"); // Usar UTC para evitar problemas de fuso horário
+
+        // Verifica se o valor deve ser arredondado
+        const valorParcela = boletoData.arredondar
+            ? Math.ceil(boletoData.valorBoleto / boletoData.parcelas) // Arredonda para cima
+            : (boletoData.valorBoleto / boletoData.parcelas).toFixed(2); // Mantém o valor original
+
+        for (let i = 0; i < boletoData.parcelas; i++) {
+            const dataVencimento = adicionarMeses(dataVencimentoInicial, i);
+            const chaveSegurança = gerarChaveSegurança(boletoData, i + 1);
+
+            const boletoHTML = `
+                <div class="pagina">
+                    <table>
+                        <tr>
+                            <td class="borda-left logo cabecalho">
+                                <img src="logo-esc.png" width="80">
+                            </td>
+                            <td class="borda-left cabecalho center">Lilían Joíc Advocacia</td>
+                            <td class="sem-borda cabecalho right" colspan="5">
+                                Recibo do Pagador <br>
+                                ${chaveSegurança.replace(/-/g, " ")} <!-- Chave de segurança formatada -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left" colspan="6">
+                                <p>Local de Pagamento</p>
+                                Apenas no escritório: Rua 02, Quadra S-13, N 2-A, Vila São Joaquim, Sobradinho/BA - CEP: 48925-000
+                                (Rua do Bradesco, próximo à Ótica do Vale)
+                            </td>
+                            <td class="center">
+                                <p>Data de Vencimento</p>
+                                ${formatarData(dataVencimento)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left" colspan="6">
+                                <p>Nome do Beneficiário / CNPJ / Endereço:</p>
+                                Lilían Joíc Advocacia - CNPJ: 00.000.000/0000-00 <br>
+                                Rua 02, Quadra S-13, N 2-A, Vila São Joaquim, Sobradinho/BA - CEP: 48925-000
+                            </td>
+                            <td class="center">
+                                <p>Agência/Código Beneficiário</p>
+                                123/54321-01
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="center">
+                                <p>Data do Documento</p>
+                                ${formatarData(new Date())}
+                            </td>
+                            <td class="center" colspan="2">
+                                <p>Número do Documento</p>
+                                ${boletoData.numeroDocumento}-${i + 1}
+                            </td>
+                            <td class="center">
+                                <p>Espécie doc</p>
+                                DM
+                            </td>
+                            <td class="center">
+                                <p>Aceite</p>
+                                N
+                            </td>
+                            <td class="center">
+                                <p>Data Processamento</p>
+                                ${formatarData(new Date())}
+                            </td>
+                            <td class="center">
+                                <p>Nosso Número</p>
+                                000000000
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p>Espécie R$</p>
+                            </td>
+                            <td class="center" colspan="2">
+                                <p>Quantidade</p>
+                                ${boletoData.parcelas}
+                            </td>
+                            <td class="center">
+                                <p>Valor</p>
+                                ${formatarValor(boletoData.valorBoleto)}
+                            </td>
+                            <td class="center">
+                                <p>(=) Valor do Documento</p>
+                                ${formatarValor(valorParcela)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left" colspan="7">
+                                <p>Instruções</p>
+                                Pagamento deve ser realizado exclusivamente no escritório.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <table>
+                                    <tr>
+                                        <td class="sem-borda"><b>Nome do Pagador: </b> ${boletoData.nomePagador}</td>
+                                        <td class="sem-borda"><b>CPF/CNPJ: </b> ${boletoData.cpfCnpjPagador}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="sem-borda"><b>Endereço: </b> ${boletoData.enderecoPagador}</td>
+                                    </tr>
+                                    
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                ${i < boletoData.parcelas - 1 ? "<hr>" : ""} <!-- Linha de corte entre boletos -->
+            `;
+            boletosContainer.innerHTML += boletoHTML;
+        }
+    </script>
+    
+</body>
+
+</html>
