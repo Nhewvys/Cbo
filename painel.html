@@ -243,7 +243,7 @@
             console.log(JSON.stringify(boletoData, null, 2));
 
             // Gera a URL com os dados do boleto
-            const url = `/boletos.html?data=${encodeURIComponent(JSON.stringify(boletoData))}`;
+            const url = `boletos.html?data=${encodeURIComponent(JSON.stringify(boletoData))}`;
             console.log(url);
 
             window.open(url, '_blank')
