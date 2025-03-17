@@ -203,7 +203,7 @@ footer {
     .header-form-login p {
         font-size: 0.8rem; /* Font menor */
     }
-
+    
     /* Ajustes nos inputs */
     .input-box {
         width: 100%; /* Garantir que o input ocupe toda a largura disponível */
@@ -218,9 +218,11 @@ footer {
 
     .btn {
         width: 100%; /* Botões ocupando toda a largura */
-        
+        font-size: .9rem;
     }
-
+    .input-box label{
+        font-size: .865rem;
+    }
     /* Ajuste no rodapé */
     footer {
         bottom: 20px; /* Aumentar a distância do rodapé */

@@ -140,13 +140,25 @@
             return `${dia}/${mes}/${ano}`;
         }
 
+
         // Função para formatar o valor com 2 casas decimais
         function formatarValor(valor) {
-            const numero = parseFloat(valor); // Garantir que o valor seja um número
+            // Remover os pontos de milhar
+            valor = valor.replace(/\./g, '');
+
+            // Substituir a vírgula decimal por ponto
+            valor = valor.replace(',', '.');
+
+            // Converter para número
+            const numero = parseFloat(valor);
+
+            // Verificar se o valor é válido
             if (isNaN(numero)) {
                 return 'Valor inválido';
             }
-            return numero.toFixed(2).replace('.', ','); // Formatar para duas casas decimais
+
+            // Formatar no padrão brasileiro (R$ 7.590,00)
+            return numero.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
         // Função para gerar a chave de segurança
@@ -157,6 +169,7 @@
         // Captura os dados da URL
         const queryParams = getQueryParams();
         const boletoData = JSON.parse(queryParams.data);
+        console.log(boletoData);
 
         // Gera os boletos com base no número de parcelas
         const boletosContainer = document.getElementById("boletos-container");
@@ -246,7 +259,7 @@
                             </td>
                             <td class="center">
                                 <p>(=) Valor do Documento</p>
-                                ${formatarValor(valorParcela)}
+                                ${formatarValor(boletoData.valorParcela)}
                             </td>
                         </tr>
                         <tr>
@@ -276,7 +289,7 @@
             boletosContainer.innerHTML += boletoHTML;
         }
     </script>
-    
+
 </body>
 
 </html>
